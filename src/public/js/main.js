@@ -1,12 +1,20 @@
-$('tbody').sortable({
+$("tbody").sortable({
+	items: "tr:not('.home')",
+	placeholder: "ui-state-hightlight",
+	update: function () {
+		var ids = $("tbody").sortable("serialize");
+		var url = "/admin/reorder-page";
 
-    items: "tr:not('.home')",
-    placeholder: "ui-state-hightlight",
-    update: function () {
-        var ids = $('tbody').sortable("serialize");
-        var url = "/admin/reorder-page";
-        
-        $.post(url, ids);
-    }
+		$.post(url, ids);
+	},
+});
 
+$(function () {
+	if ($("textarea#content").length) {
+		CKEDITOR.replace("content");
+	}
+
+	$("a.confirmDeletion").on('click', function () {
+        if(!confirm('Are you sure delete ?')) return false
+    });
 });

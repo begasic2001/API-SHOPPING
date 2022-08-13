@@ -42,7 +42,6 @@ class AdminController {
 			})
 				.then((page) => {
 					if (page) {
-						req.flash("danger", "Page slug exists,choose another");
 						res.render("admin/add-page", {
 							title,
 							slug,
@@ -55,7 +54,7 @@ class AdminController {
 							content,
 							sorting: 0,
 						}).then(() => {
-							req.flash("Success", "Page added");
+						
 							res.redirect("http://localhost:9000/admin/page");
 						});
 					}
@@ -80,23 +79,80 @@ class AdminController {
 			})(count);
 		});
 	}
-	// sửa thông tin page
+	// [get] sửa thông tin page
 	editPage(req, res, next) {
 		const slug = req.params.slug;
 
-		Page.findOne({ slug })
+		Page.findOne({ _id: slug })
 			.then((page) => {
-				console.log(page)
 				res.render("admin/edit-page", {
 					title: page.title,
 					slug: page.slug,
 					content: page.content,
 					id: page._id,
+			
 				});
 			})
 			.catch((err) => {
 				console.log(err);
 			});
+	}
+	// [put] sửa thông tin page
+	posteditPages(req, res, next) {
+		// res.send("chuyen trang thanh cong")
+		const id = req.params.slug;
+		let title = req.body.title;
+		let content = req.body.content;
+		let slug = req.body.slug.replace(/\s+/g, "-").toLowerCase();
+		if (slug == "") slug = title.replace(/\s+/g, "-").toLowerCase();
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			const alert = errors.array();
+			res.render("admin/edit-page", {
+				alert,
+				
+			});
+		} else {
+			Page.findOne({
+				slug,
+				_id: { $ne: id },
+			})
+				.then((page) => {
+					if (page) {
+					
+						res.render("admin/edit-page", {
+							title,
+							slug,
+							content,
+							id,
+						});
+					} else {
+						Page.findByIdAndUpdate(id, {
+							title,
+							slug,
+							content,
+							sorting: 0,
+						}).then((pages) => {
+					
+							res.redirect("/admin/edit-page/" + pages._id);
+						});
+					}
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
+	}
+	detelePage(req, res, next) {
+		Page.findByIdAndDelete({
+			_id: req.params.slug,
+		})
+		.then(() =>{
+			res.redirect("/admin/page/");
+		})
+		.catch(err => {
+			console.log(err)
+		})
 	}
 }
 
