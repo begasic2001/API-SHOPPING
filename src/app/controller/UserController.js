@@ -1,7 +1,7 @@
 
 class UserController {
     home(req,res,next){
-        res.render('index')
+        res.render('user/index')
     }
 }
 

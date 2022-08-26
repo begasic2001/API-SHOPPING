@@ -1,0 +1,12 @@
+<%- include ('../layouts/adminHeader'); -%>
+<h2 class="page-title">Add a category</h2>
+<a href="/api/categories" class="btn btn-primary">Back to all categories</a>
+<br>
+<form action="/api/categories/add-categories" method="POST">
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" name="title" id="title" placeholder="Title">
+    </div>
+    <button class="btn btn-danger">Submit</button>
+</form>
+<%- include ('../layouts/adminFooter'); -%>

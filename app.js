@@ -6,6 +6,7 @@ const path = require("path");
 const session = require("express-session");
 const cors = require("cors");
 const morgan = require("morgan");
+const fileUpload = require("express-fileupload")
 const database = require("./src/config/database");
 const route = require("./src/router/index");
 const app = express();
@@ -15,6 +16,8 @@ app.use(methodOverride("_method"));
 app.use(cors());
 // logger morgan
 app.use(morgan("combined"));
+// file upload
+app.use(fileUpload())
 // use session save cart
 app.use(
 	session({

@@ -1,6 +1,7 @@
 const { body, validationResult } = require("express-validator");
 const Page = require("../model/page");
-class AdminController {
+
+class PageController {
 	home(req, res, next) {
 		Page.find({})
 			.sort({ sorting: 1 })
@@ -54,8 +55,7 @@ class AdminController {
 							content,
 							sorting: 0,
 						}).then(() => {
-						
-							res.redirect("http://localhost:9000/admin/page");
+							res.redirect("http://localhost:9000/api/page");
 						});
 					}
 				})
@@ -90,7 +90,6 @@ class AdminController {
 					slug: page.slug,
 					content: page.content,
 					id: page._id,
-			
 				});
 			})
 			.catch((err) => {
@@ -110,7 +109,6 @@ class AdminController {
 			const alert = errors.array();
 			res.render("admin/edit-page", {
 				alert,
-				
 			});
 		} else {
 			Page.findOne({
@@ -119,7 +117,6 @@ class AdminController {
 			})
 				.then((page) => {
 					if (page) {
-					
 						res.render("admin/edit-page", {
 							title,
 							slug,
@@ -133,8 +130,7 @@ class AdminController {
 							content,
 							sorting: 0,
 						}).then((pages) => {
-					
-							res.redirect("/admin/edit-page/" + pages._id);
+							res.redirect("/api/page/edit-page/" + pages._id);
 						});
 					}
 				})
@@ -147,13 +143,12 @@ class AdminController {
 		Page.findByIdAndDelete({
 			_id: req.params.slug,
 		})
-		.then(() =>{
-			res.redirect("/admin/page/");
-		})
-		.catch(err => {
-			console.log(err)
-		})
+			.then(() => {
+				res.redirect("/api/page/");
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	}
 }
-
-module.exports = new AdminController();
+module.exports = new PageController();

@@ -1,6 +1,6 @@
 <%- include ('../layouts/adminHeader'); -%>
 <h2 class="page-title">Pages</h2>
-<a href="/admin/add-page" class="btn btn-primary">Go To add pages</a>
+<a href="/api/page/add-page" class="btn btn-primary">Go To add pages</a>
 <br>
 <table class="table table-striped sorting">
 
@@ -15,11 +15,11 @@
         <% pages.forEach(function(page){ %>
         <tr id="id_<%= page._id %>" class="<%= page.slug %>">
             <td><%= page.title %></td>
-            <td><a href="/admin/edit-page/<%= page._id %>">Edit</a></td>
+            <td><a href="/api/page/edit-page/<%= page._id %>">Edit</a></td>
             <% if (page.slug == "home") { %>
             <td></td>
             <% }  else {%>
-            <td><a class="confirmDeletion" href="/admin/delete-page/<%= page._id %>">Delete</a></td>
+            <td><a class="confirmDeletion" href="/api/page/delete-page/<%= page._id %>">Delete</a></td>
             <% }%>
         </tr>
         <% }); %>
