@@ -41,13 +41,7 @@ class ProductController {
 		let imageFile;
 		if (!(req.files && req.files.image)) {
 			imageFile = "";
-		}
-		// if (!req?.files?.image) {
-
-		// }
-		// if (!req.files || Object.keys(req.files).length === 0 || req.files === null ) {
-		// 	imageFile = "";
-		else {
+		} else {
 			imageFile = req.files.image.name;
 		}
 		let title = req.body.title;

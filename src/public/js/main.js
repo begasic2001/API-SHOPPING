@@ -3,7 +3,7 @@ $("tbody").sortable({
 	placeholder: "ui-state-hightlight",
 	update: function () {
 		var ids = $("tbody").sortable("serialize");
-		var url = "/admin/reorder-page";
+		var url = "/api/page/reorder-page";
 
 		$.post(url, ids);
 	},
@@ -14,7 +14,7 @@ $(function () {
 		CKEDITOR.replace("content");
 	}
 
-	$("a.confirmDeletion").on('click', function () {
-        if(!confirm('Are you sure delete ?')) return false
-    });
+	$("a.confirmDeletion").on("click", function () {
+		if (!confirm("Are you sure delete ?")) return false;
+	});
 });

@@ -1,6 +1,41 @@
 const { body, validationResult } = require("express-validator");
 const Page = require("../model/page");
+// Sort pages function
+function sortPages(ids, callback) {
+	// let count = 0;
+	// ids.map((id) => {
+	// 	count++;
+	// 	(function (count) {
+	// 		Page.findById({ _id: id }).then((page) => {
+	// 			page.sorting = count;
+	// 			++count;
+	// 			if (count >= ids.length) {
+ 	// 					callback();
+ 	// 				}
+	// 			// return page.save();
+	// 		});
+	// 	})(count);
+	// });
+	var count = 0;
 
+	for (var i = 0; i < ids.length; i++) {
+		var id = ids[i];
+		count++;
+
+		(function (count) {
+			Page.findById(id, function (err, page) {
+				page.sorting = count;
+				page.save(function (err) {
+					if (err) return console.log(err);
+					++count;
+					if (count >= ids.length) {
+						callback();
+					}
+				});
+			});
+		})(count);
+	}
+ }
 class PageController {
 	home(req, res, next) {
 		Page.find({})
@@ -66,18 +101,19 @@ class PageController {
 	}
 	// cập nhật thứ tự sắp xếp page
 	reorderPage(req, res, next) {
-		// console.log(req.body)
-		const ids = req.body.id;
-		let count = 0;
-		ids.map((id) => {
-			count++;
-			(function (count) {
-				Page.findById({ _id: id }).then((page) => {
-					page.sorting = count;
-					return page.save();
+		let ids = req.body.id;
+		sortPages(ids, function () {
+			Page.find({})
+				.sort({ sorting: 1 })
+				.exec(function (err, pages) {
+					if (err) {
+						console.log(err);
+					} else {
+						req.app.locals.pages = pages;
+					}
 				});
-			})(count);
 		});
+		
 	}
 	// [get] sửa thông tin page
 	editPage(req, res, next) {

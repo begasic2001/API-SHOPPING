@@ -1,12 +1,14 @@
 const express = require("express");
 const methodOverride = require("method-override");
 const cookieParser = require("cookie-parser");
+const Page = require("./src/app/model/page");
+const Category = require("./src/app/model/category");
 require("dotenv").config();
 const path = require("path");
 const session = require("express-session");
 const cors = require("cors");
 const morgan = require("morgan");
-const fileUpload = require("express-fileupload")
+const fileUpload = require("express-fileupload");
 const database = require("./src/config/database");
 const route = require("./src/router/index");
 const app = express();
@@ -17,17 +19,39 @@ app.use(cors());
 // logger morgan
 app.use(morgan("combined"));
 // file upload
-app.use(fileUpload())
+app.use(fileUpload());
 // use session save cart
 app.use(
 	session({
 		secret: process.env.SECRET_SESSION,
 		resave: true,
 		saveUninitialized: true,
-		// cookie: { secure: false },
+		cookie: { secure: false },
 	}),
 );
 app.use(cookieParser());
+
+// Get all pages to pass to header.ejs
+Page.find({})
+	.sort({ sorting: 1 })
+	.exec(function (err, pages) {
+		if (err) {
+			console.log(err);
+		} else {
+			app.locals.pages = pages;
+		}
+	});
+
+// Get Category Model
+
+// Get all categories to pass to header.ejs
+Category.find(function (err, categories) {
+	if (err) {
+		console.log(err);
+	} else {
+		app.locals.categories = categories;
+	}
+});
 // read body form client
 app.use(
 	express.urlencoded({
