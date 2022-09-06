@@ -46,6 +46,13 @@ class CategoryController {
 							title,
 							slug,
 						}).then(() => {
+							Category.find(function (err, categories) {
+								if (err) {
+									console.log(err);
+								} else {
+									req.app.locals.categories = categories;
+								}
+							});
 							res.redirect("http://localhost:9000/api/categories");
 						});
 					}
@@ -99,7 +106,13 @@ class CategoryController {
 							title,
 							slug,
 						}).then((pages) => {
-							// console.log(pages)
+							Category.find(function (err, categories) {
+								if (err) {
+									console.log(err);
+								} else {
+									req.app.locals.categories = categories;
+								}
+							});
 							res.redirect("/api/categories/edit-categories/" + pages._id);
 						});
 					}
@@ -115,6 +128,13 @@ class CategoryController {
 			_id: req.params.id,
 		})
 			.then(() => {
+				Category.find(function (err, categories) {
+					if (err) {
+						console.log(err);
+					} else {
+						req.app.locals.categories = categories;
+					}
+				});
 				res.redirect("/api/categories/");
 			})
 			.catch((err) => {

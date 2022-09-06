@@ -1,10 +1,13 @@
 const Page = require("../model/page");
+const Product = require("../model/product");
 class UserController {
 	home(req, res, next) {
-		Page.find({})
-			.sort({ sorting: 1 })
+		Page.findOne({ slug: "home" })
 			.then((pages) => {
-				res.render("user/index");
+				res.render("user/index", {
+					title: pages.title,
+					content: pages.content,
+				});
 			})
 			.catch((err) => {
 				console.log(err);
@@ -14,8 +17,24 @@ class UserController {
 		let slug = req.params.slug;
 		Page.findOne({ slug })
 			.then((pages) => {
+				if (!pages) {
+					res.redirect("/user");
+				}
 				res.render("user/index", {
-					pages,
+					title: pages.title,
+					content: pages.content,
+				});
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}
+	getAllProduct(req,res,next){
+		Product.find({})
+			.then((products) => {
+				res.render("user/all_product", {
+					products,
+					title:"ALL PRODUCT"
 				});
 			})
 			.catch((err) => {
