@@ -30,7 +30,10 @@ app.use(
 	}),
 );
 app.use(cookieParser());
-
+app.get("*", function (req, res, next) {
+	res.locals.cart = req.session.cart;
+	next();
+});
 // Get all pages to pass to header.ejs
 Page.find({})
 	.sort({ sorting: 1 })

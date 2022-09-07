@@ -13,8 +13,10 @@ $(function () {
 	if ($("textarea#content").length) {
 		CKEDITOR.replace("content");
 	}
-
 	$("a.confirmDeletion").on("click", function () {
 		if (!confirm("Are you sure delete ?")) return false;
 	});
+	if ($("a.gallery").length) {
+		$("a.gallery").fancybox();
+	}
 });
