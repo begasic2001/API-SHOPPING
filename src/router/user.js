@@ -1,6 +1,11 @@
-const express = require('express')
-const router = express.Router()
-const UserController = require('../app/controller/UserController')
-router.get('/',UserController.home)
+const express = require("express");
+const router = express.Router();
+const UserController = require("../app/controller/UserController");
+router.get("/", UserController.home);
 router.get("/:slug", UserController.showPage);
-module.exports = router
+router.get("/login", UserController.getLogin);
+router.get("/register", UserController.getRegister);
+router.post("/login", UserController.postLogin);
+router.post("/register", UserController.postRegister);
+router.post("/logout", UserController.logout);
+module.exports = router;
