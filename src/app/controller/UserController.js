@@ -3,7 +3,7 @@ const Product = require("../model/product");
 var mkdirp = require("mkdirp");
 var resizeImg = require("resize-img");
 const fs = require("fs-extra");
-let User = require("../app/model/user");
+let User = require("../model/user");
 let bcrypt = require("bcrypt");
 let passport = require("passport");
 class UserController {
