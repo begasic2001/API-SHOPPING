@@ -49,19 +49,15 @@
                   )</a>
               </li>
                   <% if (user) { %>
-                  <li><a href="/users/logout">Hi, <%= user.username %> ( logout )</a></li>
+                  <li><a href="/user/logout">Hi, <%= user.username %> ( logout )</a></li>
                   <% } else {%>
-                  <li><a href="/users/register">Register</a></li>
-                  <li><a href="/users/login">Log in</a></li>
+                  <li><a href="/user/register">Register</a></li>
+                  <li><a href="/user/login">Log in</a></li>
                   <% } %>
                   <% if (user && user.admin == 1) { %>
-                  <li><a href="/admin/pages">Admin Area</a></li>
+                  <li><a href="/api/page">Admin Area</a></li>
                   <% }%>
           </ul>
-          <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
         </div>
       </nav>
       <div class="container">

@@ -31,11 +31,7 @@ app.use(
 	}),
 );
 app.use(cookieParser());
-app.get("*", function (req, res, next) {
-	res.locals.cart = req.session.cart;
-	res.locals.user = req.user || null
-	next();
-});
+
 // Get all pages to pass to header.ejs
 Page.find({})
 	.sort({ sorting: 1 })
@@ -57,6 +53,18 @@ Category.find(function (err, categories) {
 		app.locals.categories = categories;
 	}
 });
+
+// Passport Config
+require("./src/config/passport")(passport);
+// Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+app.get("*", function (req, res, next) {
+	res.locals.cart = req.cookies.cart;
+	// res.locals.cart = req.session.cart;
+	res.locals.user = req.user || null;
+	next();
+});
 // read body form client
 app.use(
 	express.urlencoded({
@@ -64,11 +72,7 @@ app.use(
 	}),
 );
 app.use(express.json());
-// Passport Config
-require("./src/config/passport")(passport);
-// Passport Middleware
-app.use(passport.initialize());
-app.use(passport.session());
+
 // connect db
 database.connect();
 
